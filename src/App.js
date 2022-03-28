@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Web3 from "web3";
 import detectEthereumProvider from '@metamask/detect-provider'
 import {loadContract} from "./utils/LoadContract";
@@ -17,8 +17,13 @@ function App() {
   const [bnb, setBnb] = useState(0);
   const [content, setContent] = useState('');
 
-  const [funcContract, setFuncContract] = useState(null);
   const [members, setMembers] = useState([]);
+
+  const [shoudReload, reload] = useState(false);
+
+  const reloadEffect = () => {
+    reload(!shoudReload);
+  }
 
   useEffect(() => {
     const loadProvider = async function() {
@@ -45,7 +50,8 @@ function App() {
       setBalance(web3.utils.fromWei(balance, "ether"));
     };
     web3Api.contract && loadBalance();
-  }, [web3Api]);
+    
+  }, [web3Api, shoudReload]);
 
   // useEffect(() => {
   //   const getAccount = async function() {
@@ -55,22 +61,15 @@ function App() {
   //   web3Api.web3 && getAccount()
   // }, [web3Api.web3]);
 
-  useEffect(() => {
-    const initContract = () => {
-      const {contract, web3} = web3Api;
-      const Contract = new web3.eth.Contract(contract.abi, contract.address);
-      setFuncContract(Contract);
-    };
-    web3Api.contract && initContract();
-  }, [web3Api]);
-
+  
   useEffect(() => {
     const loadMembers = async () => {
-      const {web3} = web3Api;
-      const totalMember = await funcContract.methods.counter().call();
+      const {contract, web3} = web3Api;
+      const totalMember = await contract.counter();
       if (totalMember > 0) {
+        setMembers([]);
         for (var i = 0; i < totalMember; i++) {
-          funcContract.methods.getDetail(i).call().then(info => {
+          contract.getDetail(i).then(info => {
             setMembers(oldMembers => [...oldMembers, {
               address: info[0],
               bnb: web3.utils.fromWei(info[1], 'ether'),
@@ -80,9 +79,24 @@ function App() {
         }
       }
     };
-    funcContract && loadMembers();
-    console.log('here funcContract');
-  }, [funcContract]);
+    console.log('loadMembers');
+    web3Api.contract && loadMembers();
+  }, [web3Api]);
+
+  useEffect(() => {
+    const triggerEvent = async () => {
+      const {contract, web3} = web3Api;
+      contract.DepositEvent().on('data', event => {
+        setMembers(oldMembers => [...oldMembers, {
+          address: event.returnValues[0],
+          bnb: web3.utils.fromWei(event.returnValues[1], 'ether'),
+          msg: event.returnValues[2]
+        }]);
+      });
+    };
+    web3Api.contract && triggerEvent();
+    console.log('triggerEvent');
+  }, [web3Api]);
 
   const connect = async () => {
     return web3Api.provider.request({method:"eth_requestAccounts"});
@@ -94,17 +108,18 @@ function App() {
     });
   }
 
-  const onDeposit = () => {
+  const onDeposit = async () => {
     if (account) {
-      const {web3} = web3Api;
-      funcContract.methods.Deposit(content).send({
+      const {contract, web3} = web3Api;
+      await contract.Deposit(content, {
         from: account,
         value: web3.utils.toWei(bnb, 'ether')
-      })
+      });
+      reloadEffect();
     } else {
       alert("Please login MM")
     }
-  }
+  };
 
   return (
     <div className="fund-wrapper">

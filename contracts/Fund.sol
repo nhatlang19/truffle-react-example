@@ -15,9 +15,13 @@ contract Fund {
         owner = msg.sender;
     }
 
+    event DepositEvent(address _address, uint _money, string _content);
+
     function Deposit(string memory _content) public payable {
         require(msg.value >= (10**18 * 0.001), "Sorry, minumum value must be 0.001 BNB");
         members.push(Member(msg.sender, msg.value, _content));
+
+        emit DepositEvent(msg.sender, msg.value, _content);
     }
 
     function Withdraw() public {

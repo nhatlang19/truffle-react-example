@@ -12,7 +12,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -25,7 +26,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.8.7+commit.e28d00a7\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"so_nguyen\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"so_nguyen_duong\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Faucet.sol\":\"Faucet\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/Faucet.sol\":{\"keccak256\":\"0xeebbc3b07af3b0ee05d90fcfae1b98fc6905249444df4b6b9be6e2e6f0d06c8d\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://2ee6f5ad6d5c7714a3ece6840b99190c58cc334d0e19346d8259d50b46c2cda2\",\"dweb:/ipfs/QmWZ7ny1ahhM8KCtdwrWWVm5tDPf6TFNfVhaesAA11xejD\"]}},\"version\":1}",
@@ -837,12 +839,13 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x124A706942F75E89A8da71E68715B77793ae338B",
-      "transactionHash": "0x2ff4d3f3aac6df3693e8007ffbd7165b4d77bbd0e03c5b2f78942ea850183f87"
+      "address": "0x81003B2246426C7dCae40Ea928E8411b9E25D8CB",
+      "transactionHash": "0x1cdd6bac90df08981f77b4151597782a9ce3bc81576f35684ecce5151d5cded3"
     }
   },
   "schemaVersion": "3.4.6",
-  "updatedAt": "2022-03-28T03:31:17.429Z",
+  "updatedAt": "2022-03-28T05:39:43.921Z",
+  "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
     "methods": {},
